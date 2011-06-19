@@ -21,7 +21,6 @@ unsigned char SLIPSerialUSB::retrieveByte()
 
 void SLIPSerialUSB::retrievePacket(unsigned char* packet, int length)
 {
-  Serial.println("retrievePacket");
   if (packetReady && buffer != NULL) {
       memcpy(packet, buffer, bufferLen);
       free(buffer);
