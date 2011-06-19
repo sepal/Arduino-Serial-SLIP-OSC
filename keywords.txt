@@ -1,0 +1,56 @@
+#######################################
+# Syntax Coloring Map For Wire
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ByteUtilities KEYWORD1
+OSC KEYWORD1
+Message KEYWORD1
+SLIP KEYWORD1
+SLIPSerialUSB KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+float2Byte	KEYWORD2
+int2Byte	KEYWORD2
+string2Byte	KEYWORD2
+stringZeroLen	KEYWORD2
+byte2Float	KEYWORD2
+byte2Int	KEYWORD2
+byte2String	KEYWORD2
+
+setAddress KEYWORD2
+add KEYWORD2
+calcDataPos KEYWORD2
+getFloat KEYWORD2
+getInt KEYWORD2
+getString KEYWORD2
+isFloatAt KEYWORD2
+isIntAt KEYWORD2
+isStringAt KEYWORD2
+getTypeTagAt KEYWORD2
+getAddress KEYWORD2
+getTypeTag KEYWORD2
+getPacket KEYWORD2
+setPacket KEYWORD2
+length KEYWORD2
+argumentsLen KEYWORD2
+clear KEYWORD2
+
+sendByte KEYWORD2
+retrieveByte KEYWORD2
+flushData KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
