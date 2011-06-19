@@ -21,9 +21,11 @@ unsigned char SLIPSerialUSB::retrieveByte()
 
 void SLIPSerialUSB::retrievePacket(unsigned char* packet, int length)
 {
+  Serial.println("retrievePacket");
   if (packetReady && buffer != NULL) {
       memcpy(packet, buffer, bufferLen);
       free(buffer);
+      bufferLen = 0;
       packetReady = false;
   }
 }
@@ -36,7 +38,7 @@ int SLIPSerialUSB::getPacketLen()
 bool SLIPSerialUSB::packetAvailable()
 {
   if (Serial.available() && !packetReady) {
-    int byte = retrieveByte();
+    unsigned char byte = retrieveByte();
     switch(byte) {
       case END:
         if (bufferLen > 0) {
@@ -45,9 +47,6 @@ bool SLIPSerialUSB::packetAvailable()
         }
         break;
       case ESC:
-        // Wait for next byte
-        while (Serial.available() <=0 ) {}
-        
         byte = retrieveByte();
         switch(byte) {
           case ESC_END:
@@ -62,7 +61,7 @@ bool SLIPSerialUSB::packetAvailable()
         buffer[bufferLen-1] = byte;
     }
   }
-  return false;
+  return packetReady;
 }
 
 void SLIPSerialUSB::flushData()
@@ -72,16 +71,16 @@ void SLIPSerialUSB::flushData()
 
 void SLIPSerialUSB::incBuffer()
 {
-  if (buffer != NULL) {
-    unsigned char *tmp = (unsigned char *) calloc(bufferLen, 1);
+  if (bufferLen > 0) {
+    unsigned char *tmp = (unsigned char *) malloc(bufferLen);
     memcpy(tmp, buffer, bufferLen);
     free(buffer);
     bufferLen++;
-    buffer = (unsigned char *) calloc(bufferLen, 1);
+    buffer = (unsigned char *) malloc(bufferLen);
     memcpy(buffer, tmp, bufferLen-1);
     free(tmp);
   } else {
     bufferLen++;
-    buffer = (unsigned char *) calloc(bufferLen, 1);
+    buffer = (unsigned char *) malloc(bufferLen);
   }
 }
