@@ -12,7 +12,7 @@ http://tools.ietf.org/html/rfc1055
 and the SLIP OSC examaple from Adrian Freed:
 http://www.adrianfreed.com/content/oscuino-arduino-osc-sketch-open-sound-control-work
 
-Currently only SLIP over USB communication is supported, and there is
+Currently only SLIP over the serial line is supported, and there is
 no class that handles the communication between the OSC Messages and
 the SLIP classes or any class that handles addresses and therefore 
 address patterns.
