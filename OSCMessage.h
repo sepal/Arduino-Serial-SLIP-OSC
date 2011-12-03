@@ -20,8 +20,8 @@
  * OSC Message.
  */
 
-#ifndef _OSCMessage_h_
-#define _OSCMessage_h_
+#ifndef _OSC_MESSAGE_H_
+#define _OSC_MESSAGE_H_
 
 #include "Arduino.h"
 #include "ByteUtilities.h"

@@ -1,4 +1,10 @@
 /**
+ * @file
+ * @author  Sebastian Gilits <sep.gil@gmail.com>
+ * @version 1.0
+ *
+ * @section LICENSE
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -11,27 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Arduino.h"
-#include "SLIP.h"
+#ifndef _OSC_PACKET_H_
+#define _OSC_PACKET_H_ 
 
-void SLIP::sendPacket(unsigned char* packet, int length)
-{
-  // Send an initial END character to flush out any data.
-  sendByte(END);
-  while(length--) {
-    switch (*packet) {
-      case END:
-        sendByte(ESC);
-        sendByte(ESC_END);
-        break;
-      case ESC:
-        sendByte(ESC);
-        sendByte(ESC_ESC);
-        break;
-      default:
-        sendByte(*packet);
-    }
-    packet++;
+namespace OSC {
+  class Packet
+  {
+  public:
+  private:
   }
-  sendByte(END);
 }
+
+#endif
