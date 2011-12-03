@@ -31,350 +31,123 @@ namespace OSC {
   {
     
   public:
-    Message()
-    {
-      init();
-    }
+    Message();
 
     /**
      * Create a new message without any data, but with an address/
      * @param address Adress of the OSC Message
      */
-    Message(String address)
-    {
-      init();
-      setAddress(address);
-    }
+    Message(String address);
 
-    ~Message()
-    {
-      destroy();
-    }
+    ~Message();
 
-    void setAddress(String address)
-    {
-      // Clear the address buffer it something is in it.
-      if (addrBuffer != NULL) free(addrBuffer);
-
-      addrBufferLen = ByteUtilities::nullStringLength(address);
-
-      // Allocate the memory for the address buffer array.
-      // We use calloc, so that the the buffer is allocated with zeros.
-      addrBuffer = (unsigned char *) calloc(addrBufferLen, 1);
-
-      // Get the address from the string.
-      ByteUtilities::string2Byte(address, addrBuffer);
-    
-    }
+    void setAddress(String address);
     
     /**
      * Adds an Integer to the argument list.
      */
-    void add(int data) {
-      increaseArray(&typeBuffer, typeBufferLen, typeBufferLen+1);
-      typeBufferLen++;
-      typeBuffer[typeBufferLen-1] = 'i';
-      increaseArray(&dataBuffer, dataBufferLen, dataBufferLen+4);
-
-      ByteUtilities::int2Byte(data, dataBuffer, dataBufferLen);
-      dataBufferLen += 4;
-    }
+    void add(int data);
     
     /**
      * Adds a float to the argument list.
      */
-    void add(float data) {
-      increaseArray(&typeBuffer, typeBufferLen, typeBufferLen+1);
-      typeBufferLen++;
-      typeBuffer[typeBufferLen-1] = 'f';
-      increaseArray(&dataBuffer, dataBufferLen, dataBufferLen+4);
-      
-      ByteUtilities::float2Byte(data, dataBuffer, dataBufferLen);
-      dataBufferLen += 4;
-    }
+    void add(float data);
 
     /**
      * Adds an osc string to the argument list.
      * Since it will be converted to a char array, 
      * it can not be changed aufterwards.
      */
-    void add(String str)
-    {
+    void add(String str);
 
-      increaseArray(&typeBuffer, typeBufferLen, typeBufferLen+1);
-      typeBufferLen++;
-      typeBuffer[typeBufferLen-1] = 's';
-
-      int newLen = ByteUtilities::nullStringLength(str);
-
-      increaseArray(&dataBuffer, dataBufferLen, dataBufferLen+newLen);
-
-      ByteUtilities::string2Byte(str, dataBuffer, dataBufferLen);
-      dataBufferLen += newLen;
-    }
-
-    int calcDataPos(int index) {
-      int ret = 0;
-      if (index > typeBufferLen-1) {
-        return -1;
-      }
-      for (int i=0; i<index; i++) {
-        
-        switch (typeBuffer[i+1]) {
-          case 's':
-            {
-              unsigned char c = dataBuffer[ret++];
-              int s = 0;
-              while (c!=0x00) {
-                c = dataBuffer[ret++];
-                s++;
-              }
-              ret--;
-              ret += 4-(s%4);
-            }
-            break;
-          case 'i':
-          case 'f':
-            ret += 4;
-            break;
-        }
-      }
-      return ret;
-    }
+    int calcDataPos(int index);
 
     /**
      * Returns the data at the given index as float.
      */
-    float getFloat(int index)
-    {
-      index = calcDataPos(index);
-      if (index+3 < dataBufferLen && index >= 0){
-        return ByteUtilities::byte2Float(dataBuffer, index);
-      } else {
-        return 0.0;
-      }
-    }
+    float getFloat(int index);
 
     /**
      * Returns the data at the given index as int.
      */
-    int getInt(int index)
-    {
-      index = calcDataPos(index);
-      if (index+3 < dataBufferLen && index >= 0){
-        return ByteUtilities::byte2Int(dataBuffer, index);
-      } else {
-        return 0;
-      }
-    }
+    int getInt(int index);
 
     /**
      * Returns the data at the given index as a string.
      */
-    String getString(int index)
-    {
-      index = calcDataPos(index);
-      return ByteUtilities::byte2String(dataBuffer, index);
-    }
+    String getString(int index);
 
     /**
      * Returns true if the data at the given index is a float.
      */
-    bool isFloatAt(int index)
-    {
-      if (index+1 >= 0 && index<=typeBufferLen) {
-        return (typeBuffer[index+1]=='f' ?  true : false);
-      } else {
-        return false;
-      }
-    }
+    bool isFloatAt(int index);
 
     /**
      * Returns true if the data at the given index is an int.
      */
-    bool isIntAt(int index)
-    {
-      if (index+1 >= 0 && index<=typeBufferLen) {
-        return (typeBuffer[index+1]=='i' ?  true : false);
-      } else {
-        return false;
-      }
-    }
+    bool isIntAt(int index);
 
     /**
      * Returns true if the data at the given index is a string.
      */
-    bool isStringAt(int index)
-    {
-      if (index+1 >= 0 && index<=typeBufferLen) {
-        return (typeBuffer[index+1]=='s' ?  true : false);
-      } else {
-        return false;
-      }
-    }
+    bool isStringAt(int index);
 
     /**
      * Returns the datatype of at the given index.
      * @return OSC Type tag as unsigned char or zero if index is not available.
      */
-    unsigned char getTypeTagAt(int index)
-    {
-      if (index+1 >= 0 && index<=typeBufferLen) {
-        return typeBuffer[index+1];
-      }
-      return 0;
-    }
+    unsigned char getTypeTagAt(int index);
 
     /**
      * Returns the address as a string.
      */
-    String getAddress()
-    {
-      return ByteUtilities::byte2String(addrBuffer);
-    }
+    String getAddress();
 
     /**
      * Returns the typetag as a string.
      */
-    String getTypeTag()
-    {
-      return ByteUtilities::byte2String(typeBuffer, 1, typeBufferLen-1);
-    }
+    String getTypeTag();
 
     /**
      * Returns the byte packet ready to be sent.
      */
-    void getPacket(unsigned char *packet)
-    {
-      int cur = addrBufferLen;
-      memcpy(packet, addrBuffer, addrBufferLen);
-      for (int i=0; i<typeBufferLen; i++) {
-        packet[cur++] = typeBuffer[i];
-      }
-      for (int i=0; i<(4-(typeBufferLen%4)); i++) {
-        packet[cur++] = 0x00;
-      }
-      for (int i=0; i<dataBufferLen; i++) {
-        packet[cur++] = dataBuffer[i];
-      }
-    }
+    void getPacket(unsigned char *packet);
 
     /**
      * Creates a OSC Message from an byte array.
      * Be aware, that this function will clear all stored parameters.
      */
-    void setPacket(unsigned char *packet, int len)
-    {
-      destroy();
-      int idx = 0;
-      // Read address
-      unsigned char byte = packet[idx++];
-      while (byte != 0) {
-        byte = packet[idx++];
-      };
-      idx--;
-      addrBufferLen = idx+4-(idx%4);
-      addrBuffer = (unsigned char *) calloc(addrBufferLen, 1);
-      memcpy(addrBuffer, packet,addrBufferLen);
-      // Goto end of address part and skip the comma
-      idx = addrBufferLen+1;
-
-      // Read Types
-      byte = packet[idx++];
-      while (byte != 0) {
-        byte = packet[idx++];
-      };
-      idx--;
-      typeBufferLen = idx-addrBufferLen;
-      int tmp = idx+4-(idx%4)-addrBufferLen;
-      typeBuffer = (unsigned char *) calloc(tmp, 1);
-      
-      memcpy(typeBuffer, packet+addrBufferLen, tmp);
-
-      dataBufferLen = len - (addrBufferLen + tmp);
-      dataBuffer = (unsigned char *) calloc(dataBufferLen, 1);
-
-      memcpy(dataBuffer, packet+(addrBufferLen + tmp), dataBufferLen);
-    }
+    void setPacket(unsigned char *packet, int len);
 
     /**
      * Returns the packet length.
      */
-    int length() {
-      // address + type
-      int len = addrBufferLen + typeBufferLen;
-      // type zeros
-      len += 4-(typeBufferLen%4);
-      // datas
-      len += dataBufferLen;
-      return len;
-    }
+    int length();
 
     /**
      * Returns the argument list length.
      */
-    int argumentsLen() {
-      return typeBufferLen-1;
-    }
+    int argumentsLen();
     
     /**
      * Clear argument list.
      */
-    void clear()
-    {
-      if (typeBuffer != NULL) free(typeBuffer);
-      if (dataBuffer != NULL) free(dataBuffer);
-
-      dataBufferLen = NULL;
-      dataBuffer = NULL;
-
-      typeBufferLen = 1;
-      typeBuffer = (unsigned char *) calloc(typeBufferLen, 1);
-      typeBuffer[0] = ',';
-    }
+    void clear();
   protected:
     /**
      * Increases the size of a buffer.
      */
-    void increaseArray(unsigned char **arr, int oldLen, int newLen) {
-      if (*arr != NULL) {
-        unsigned char *tmp = (unsigned char *) calloc(oldLen, 1);
-        memcpy(tmp, *arr, oldLen);
-        free(*arr);
-        *arr = (unsigned char *) calloc(newLen, 1);
-        memcpy(*arr, tmp, oldLen);
-        free(tmp);
-      } else {
-        *arr = (unsigned char *) calloc(newLen, 1);
-      }
-    }
+    void increaseArray(unsigned char **arr, int oldLen, int newLen);
     
     /**
      * Initialization routine for the constructors.
      */
-    void init()
-    {
-      addrBufferLen = NULL;
-      addrBuffer = NULL;
-      typeBufferLen = NULL;
-      typeBuffer = NULL;
-      dataBufferLen = NULL;
-      dataBuffer = NULL;
-      // Initializes the typeBuffer with the size of one for the comma.
-      typeBufferLen = 1;
-      typeBuffer = (unsigned char *) calloc(typeBufferLen, 1);
-      typeBuffer[0] = ',';
-    }
+    void init();
 
     /**
      * Clears all buffers
      */
-    void destroy()
-    {
-      if (addrBuffer != NULL) free(addrBuffer);
-      if (typeBuffer != NULL) free(typeBuffer);
-      if (dataBuffer != NULL) free(dataBuffer);
-    }
+    void destroy();
 
     unsigned char *addrBuffer;
     int addrBufferLen;
