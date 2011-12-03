@@ -25,7 +25,7 @@
 #ifndef _SLIP_H_
 #define _SLIP_H_
 
-#include "WProgram.h"
+#include "Arduino.h"
 
 /**
  * Abstract class for SLIP communication.

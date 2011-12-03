@@ -23,7 +23,7 @@
 #ifndef _OSCMessage_h_
 #define _OSCMessage_h_
 
-#include "WString.h"
+#include "Arduino.h"
 #include "ByteUtilities.h"
 
 namespace OSC {

@@ -25,7 +25,7 @@
 #ifndef _SLIPSERIALUSB_H_
 #define _SLIPSERIALUSB_H_
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include "SLIP.h"
 
 
