@@ -16,36 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SLIP_OUT_H_
-#define _SLIP_OUT_H_
+#ifndef _PORTIN_H_
+#define _PORTIN_H_
 
-#include "Port.h"
+#include "Arduino.h"
 #include "OSCPacket.h"
 
 namespace OSC {
+  typedef void (*OscEventFunction) (const Packet);
   
-  /**
-   * Abstract class for sending OSC Packets via SLIP.
-   */
-  class SlipOut : public Port
+  class PortIn : Port
   {
-  public:
-    /**
-     * Constructor, Serial line must initialized outside of this class.
-     */
-    SlipOut();
+    PortIn();
     
-    /**
-     * Sends an OSC Packet.
-     * @param The OSC Packet which should be send.
-     */
-     void send(Packet p);
+    virtual void setEventFunction(OscEventFunction function);
   protected:
-    /**
-      * Sends a byte.
-      */
-    virtual void sendByte(unsigned char b) = 0;
-    
     OscEventFunction oscEvent;
   }
 }

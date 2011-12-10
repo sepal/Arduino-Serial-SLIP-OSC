@@ -16,37 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SLIP_OUT_H_
-#define _SLIP_OUT_H_
+ 
+#ifndef _SLIP_USB_OUT_H_
+#define _SLIP_USB_OUT_H_
 
-#include "Port.h"
-#include "OSCPacket.h"
+
+
 
 namespace OSC {
-  
   /**
-   * Abstract class for sending OSC Packets via SLIP.
+   * Class for sending Serial SLIP Messages.
    */
-  class SlipOut : public Port
+  class SlipUsbOut : public SlipOut
   {
   public:
-    /**
-     * Constructor, Serial line must initialized outside of this class.
-     */
-    SlipOut();
-    
-    /**
-     * Sends an OSC Packet.
-     * @param The OSC Packet which should be send.
-     */
-     void send(Packet p);
+    SlipUsbOut(HardwareSerial* serial) : SlipOut()
+    {
+      this.serial = serial;
+    }
+  
   protected:
-    /**
-      * Sends a byte.
-      */
-    virtual void sendByte(unsigned char b) = 0;
+    virtual void sendByte(unsigned char b)
+    {
+      serial->write(b);
+    }
     
-    OscEventFunction oscEvent;
+    HardwareSerial* serial;
   }
 }
 

@@ -24,7 +24,16 @@ namespace OSC {
   class Packet
   {
   public:
-  private:
+    /**
+     * Returns the bytes of a packet.
+     * @param data An initialized byte array with the right size to which the packet should be saved. 
+     */
+    virtual void getBytes(unsigned char *data) = 0;
+  protected:
+    /**
+     * Increases the size of a buffer.
+     */
+    void increaseArray(unsigned char **arr, int oldLen, int newLen);
   }
 }
 

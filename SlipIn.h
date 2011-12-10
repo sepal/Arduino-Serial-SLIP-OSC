@@ -15,34 +15,32 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @section DESCRIPTION
- *
- * This library handles the communication between an arduinio and an 
- * external device (like an other arduino or a pc).
  */
+ 
 #ifndef _SLIP_IN_H_
 #define _SLIP_IN_H_
 
-#include "Port.h"
+#include "PortIn.h"
+#include "OSCPacket.h"
 
 namespace OSC {
+  
   /**
    * Class for retreiving Serial SLIP Messages.
    */
-  class SlipIn : public Port
+  class SlipIn : public PortIn
   {
   public:
     /**
-     * Constructor, Serial line must initialized outside of this class.
+     * Constructor, Serial line must be initialized outside of this class.
      */
     SlipIn();
     
-  /**
-    * Checks if a packet is available and saves it to an internal buffer.
+   /**
+    * Checks if a packet is available, saves it to an internal buffer and calls the oscEventFunction.
     * @return Returns true if a packet is available.
     */
-    bool packetAvailable();
+    virtual bool packetAvailable() = 0;
     
     /**
      * Reads the current packet from buffer.
@@ -51,11 +49,20 @@ namespace OSC {
     void readPacket(Packet* msg);
     
     /**
+     * Returns the length of a packet.
+     */
+    int getPacketLen();
+    
+    /**
      * Flush the buffer.
      */
-    void flush();
+    virtual void flush() = 0;
 private:
-    bool firstByte;
+    void incBuffer();
+    void clearBuffer();
+    
+    int bufferLen;
+    bool packetReady;
   }
 }
 

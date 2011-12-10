@@ -1,7 +1,7 @@
 /**
  * @file
  * @author  Sebastian Gilits <sep.gil@gmail.com>
- * @version 1.0
+ * @version 1.1
  *
  * @section LICENSE
  *
@@ -25,22 +25,41 @@
 
 #include "Arduino.h"
 #include "ByteUtilities.h"
+#include "OSCPacket.h"
 
 namespace OSC {
-  class Message
+  class Message : public Packet
   {
     
   public:
+    /**
+     * Create a new message without any data.
+     */
     Message();
 
     /**
-     * Create a new message without any data, but with an address/
+     * Create a new message without any data, but with an address.
      * @param address Adress of the OSC Message
      */
     Message(String address);
 
+    /**
+     * Deconstructor.
+     */
     ~Message();
+    
+    
+    virtual void getBytes(unsigned char *data);
+    
+    /**
+     * Creates a OSC Message from an byte array.
+     * Be aware, that this function will clear all stored parameters.
+     */
+    void setBytes(unsigned char *packet, int len);
 
+    /**
+     * Sets the address.
+     */
     void setAddress(String address);
     
     /**
@@ -55,12 +74,8 @@ namespace OSC {
 
     /**
      * Adds an osc string to the argument list.
-     * Since it will be converted to a char array, 
-     * it can not be changed aufterwards.
      */
     void add(String str);
-
-    int calcDataPos(int index);
 
     /**
      * Returns the data at the given index as float.
@@ -109,17 +124,6 @@ namespace OSC {
     String getTypeTag();
 
     /**
-     * Returns the byte packet ready to be sent.
-     */
-    void getPacket(unsigned char *packet);
-
-    /**
-     * Creates a OSC Message from an byte array.
-     * Be aware, that this function will clear all stored parameters.
-     */
-    void setPacket(unsigned char *packet, int len);
-
-    /**
      * Returns the packet length.
      */
     int length();
@@ -135,11 +139,6 @@ namespace OSC {
     void clear();
   protected:
     /**
-     * Increases the size of a buffer.
-     */
-    void increaseArray(unsigned char **arr, int oldLen, int newLen);
-    
-    /**
      * Initialization routine for the constructors.
      */
     void init();
@@ -148,6 +147,10 @@ namespace OSC {
      * Clears all buffers
      */
     void destroy();
+    /**
+     * Returns the position of a certain argument
+     */
+    int calcDataPos(int index);
 
     unsigned char *addrBuffer;
     int addrBufferLen;

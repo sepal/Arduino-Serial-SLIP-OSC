@@ -24,22 +24,19 @@
 #ifndef _PORT_H_
 #define _PORT_H_
 
-#ifndef OSC_SERIAL_PORT
-#define OSC_SERIAL_PORT Serial
-#endif
-
 #include "Arduino.h"
 
 namespace OSC {
+  typedef void (*OscEventFunction) (Packet*);
   class Port
-  {
-  public:
-    
+  {    
   protected:
     static const unsigned char END = 0300;
     static const unsigned char ESC = 0333;
     static const unsigned char ESC_END = 0334;
     static const unsigned char ESC_ESC = 0335;
+    static const unsigned char OSC_MESSAGE = '/';
+    static const unsigned char OSC_BUNDLE = '#';
   }
 }
 
