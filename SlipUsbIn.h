@@ -22,6 +22,7 @@
 
 #include "Arduino.h"
 #include "OSCMessage.h"
+#include "SlipIn.h"
 
 namespace OSC {
   /**
@@ -32,7 +33,7 @@ namespace OSC {
   public:
     SlipUsbIn(HardwareSerial* serial) : SlipIn()
     {
-      this.serial = serial;
+      this->serial = serial;
     }
     
     virtual bool packetAvailable()
@@ -45,8 +46,8 @@ namespace OSC {
               packetReady = true;
               if (buffer[0] == OSC_MESSAGE) {
                 Message packet;
-                packet.setBytes(packetReady);
-                oscEvent(packet);
+                packet.setBytes(buffer, bufferLen);
+                oscEvent(&packet);
               } else if (buffer[0] == OSC_BUNDLE) {
                 // TODO: Bundles;
               }
@@ -85,7 +86,7 @@ namespace OSC {
   protected:
     
     HardwareSerial* serial;
-  }
+  };
 }
 
 #endif

@@ -49,7 +49,9 @@ namespace OSC {
     ~Message();
     
     
-    virtual void getBytes(unsigned char *data);
+    virtual void getBytes(unsigned char *data) const;
+
+    virtual int length() const;
     
     /**
      * Creates a OSC Message from an byte array.
@@ -80,58 +82,53 @@ namespace OSC {
     /**
      * Returns the data at the given index as float.
      */
-    float getFloat(int index);
+    float getFloat(int index) const;
 
     /**
      * Returns the data at the given index as int.
      */
-    int getInt(int index);
+    int getInt(int index) const;
 
     /**
      * Returns the data at the given index as a string.
      */
-    String getString(int index);
+    String getString(int index) const;
 
     /**
      * Returns true if the data at the given index is a float.
      */
-    bool isFloatAt(int index);
+    bool isFloatAt(int index) const;
 
     /**
      * Returns true if the data at the given index is an int.
      */
-    bool isIntAt(int index);
+    bool isIntAt(int index) const;
 
     /**
      * Returns true if the data at the given index is a string.
      */
-    bool isStringAt(int index);
+    bool isStringAt(int index) const;
 
     /**
      * Returns the datatype of at the given index.
      * @return OSC Type tag as unsigned char or zero if index is not available.
      */
-    unsigned char getTypeTagAt(int index);
+    unsigned char getTypeTagAt(int index) const;
 
     /**
      * Returns the address as a string.
      */
-    String getAddress();
+    String getAddress() const;
 
     /**
      * Returns the typetag as a string.
      */
-    String getTypeTag();
-
-    /**
-     * Returns the packet length.
-     */
-    int length();
+    String getTypeTag() const;
 
     /**
      * Returns the argument list length.
      */
-    int argumentsLen();
+    int argumentsLen() const;
     
     /**
      * Clear argument list.
@@ -150,7 +147,7 @@ namespace OSC {
     /**
      * Returns the position of a certain argument
      */
-    int calcDataPos(int index);
+    int calcDataPos(int index) const;
 
     unsigned char *addrBuffer;
     int addrBufferLen;

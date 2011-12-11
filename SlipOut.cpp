@@ -6,8 +6,12 @@
 namespace OSC {
   SlipOut::SlipOut() {}
   
-  void SlipOut::send(Packet p) 
+  void SlipOut::send(Packet *p) 
   {
+    int length = p->length();
+    unsigned char* packet = (unsigned char *) malloc(length);
+    p->getBytes(packet);
+
     sendByte(END);
     while(length--) {
       switch (*packet) {

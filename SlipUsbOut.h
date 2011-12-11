@@ -20,8 +20,7 @@
 #ifndef _SLIP_USB_OUT_H_
 #define _SLIP_USB_OUT_H_
 
-
-
+#include "SlipOut.h"
 
 namespace OSC {
   /**
@@ -32,7 +31,7 @@ namespace OSC {
   public:
     SlipUsbOut(HardwareSerial* serial) : SlipOut()
     {
-      this.serial = serial;
+      this->serial = serial;
     }
   
   protected:
@@ -42,7 +41,7 @@ namespace OSC {
     }
     
     HardwareSerial* serial;
-  }
+  };
 }
 
 #endif

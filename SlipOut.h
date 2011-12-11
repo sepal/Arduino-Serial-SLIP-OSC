@@ -39,15 +39,13 @@ namespace OSC {
      * Sends an OSC Packet.
      * @param The OSC Packet which should be send.
      */
-     void send(Packet p);
+     void send(Packet *p);
   protected:
     /**
       * Sends a byte.
       */
     virtual void sendByte(unsigned char b) = 0;
-    
-    OscEventFunction oscEvent;
-  }
+  };
 }
 
 #endif

@@ -27,7 +27,6 @@
 #include "Arduino.h"
 
 namespace OSC {
-  typedef void (*OscEventFunction) (Packet*);
   class Port
   {    
   protected:
@@ -37,7 +36,7 @@ namespace OSC {
     static const unsigned char ESC_ESC = 0335;
     static const unsigned char OSC_MESSAGE = '/';
     static const unsigned char OSC_BUNDLE = '#';
-  }
+  };
 }
 
 #endif

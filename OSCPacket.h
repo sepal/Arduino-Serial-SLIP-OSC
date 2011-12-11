@@ -28,13 +28,18 @@ namespace OSC {
      * Returns the bytes of a packet.
      * @param data An initialized byte array with the right size to which the packet should be saved. 
      */
-    virtual void getBytes(unsigned char *data) = 0;
+    virtual void getBytes(unsigned char *data) const = 0;
+    
+    /**
+     * Returns the packet length.
+     */
+    virtual int length() const = 0;
   protected:
     /**
      * Increases the size of a buffer.
      */
     void increaseArray(unsigned char **arr, int oldLen, int newLen);
-  }
+  };
 }
 
 #endif

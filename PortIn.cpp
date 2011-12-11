@@ -2,7 +2,7 @@
 #include "PortIn.h"
 
 namespace OSC {
-  void osc_std_event(const Packet) {}
+  void osc_std_event(const Packet*) {}
   
   PortIn::PortIn()
   {

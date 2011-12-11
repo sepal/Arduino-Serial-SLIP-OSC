@@ -4,17 +4,15 @@
 namespace OSC {
   SlipIn::SlipIn() : PortIn()
   {
-    bufferLen = 0;
-    packetReady = false;
+    clearBuffer();
   }
 
-  void SlipIn::readPacket(Packet* msg) {
+  void SlipIn::readPacket(Packet* packet) {
     if (packetReady && buffer != NULL) {
       memcpy(packet, buffer, bufferLen);
       free(buffer);
     }
-    bufferLen = 0;
-    packetReady = false;
+    clearBuffer();
   }
 
 

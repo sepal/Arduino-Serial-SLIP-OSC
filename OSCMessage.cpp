@@ -19,7 +19,7 @@ namespace OSC {
     destroy();
   }
 
-  void Message::getBytes(unsigned char *packet)
+  void Message::getBytes(unsigned char *packet) const
   {
     int cur = addrBufferLen;
     memcpy(packet, addrBuffer, addrBufferLen);
@@ -32,6 +32,17 @@ namespace OSC {
     for (int i=0; i<dataBufferLen; i++) {
       packet[cur++] = dataBuffer[i];
     }
+  }
+
+  int Message::length() const
+  {
+    // address + type
+    int len = addrBufferLen + typeBufferLen;
+    // type zeros
+    len += 4-(typeBufferLen%4);
+    // datas
+    len += dataBufferLen;
+    return len;
   }
 
 
@@ -85,7 +96,8 @@ namespace OSC {
   
   }
   
-  void Message::add(int data) {
+  void Message::add(int data)
+  {
     increaseArray(&typeBuffer, typeBufferLen, typeBufferLen+1);
     typeBufferLen++;
     typeBuffer[typeBufferLen-1] = 'i';
@@ -95,7 +107,8 @@ namespace OSC {
     dataBufferLen += 4;
   }    
 
-  void Message::add(float data) {
+  void Message::add(float data)
+  {
     increaseArray(&typeBuffer, typeBufferLen, typeBufferLen+1);
     typeBufferLen++;
     typeBuffer[typeBufferLen-1] = 'f';
@@ -120,7 +133,7 @@ namespace OSC {
     dataBufferLen += newLen;
   }
 
-  float Message::getFloat(int index)
+  float Message::getFloat(int index) const
   {
     index = calcDataPos(index);
     if (index+3 < dataBufferLen && index >= 0){
@@ -130,7 +143,7 @@ namespace OSC {
     }
   }
 
-  int Message::getInt(int index)
+  int Message::getInt(int index) const
   {
     index = calcDataPos(index);
     if (index+3 < dataBufferLen && index >= 0){
@@ -140,13 +153,13 @@ namespace OSC {
     }
   }
 
-  String Message::getString(int index)
+  String Message::getString(int index) const
   {
     index = calcDataPos(index);
     return ByteUtilities::byte2String(dataBuffer, index);
   }
 
-  bool Message::isFloatAt(int index)
+  bool Message::isFloatAt(int index) const
   {
     if (index+1 >= 0 && index<=typeBufferLen) {
       return (typeBuffer[index+1]=='f' ? true : false);
@@ -158,7 +171,7 @@ namespace OSC {
   /**
 * Returns true if the data at the given index is an int.
 */
-  bool Message::isIntAt(int index)
+  bool Message::isIntAt(int index) const
   {
     if (index+1 >= 0 && index<=typeBufferLen) {
       return (typeBuffer[index+1]=='i' ? true : false);
@@ -168,7 +181,7 @@ namespace OSC {
   }
 
 
-  bool Message::isStringAt(int index)
+  bool Message::isStringAt(int index) const
   {
     if (index+1 >= 0 && index<=typeBufferLen) {
       return (typeBuffer[index+1]=='s' ? true : false);
@@ -177,7 +190,7 @@ namespace OSC {
     }
   }
 
-  unsigned char Message::getTypeTagAt(int index)
+  unsigned char Message::getTypeTagAt(int index) const
   {
     if (index+1 >= 0 && index<=typeBufferLen) {
       return typeBuffer[index+1];
@@ -185,27 +198,18 @@ namespace OSC {
     return 0;
   }
 
-  String Message::getAddress()
+  String Message::getAddress() const
   {
     return ByteUtilities::byte2String(addrBuffer);
   }
 
-  String Message::getTypeTag()
+  String Message::getTypeTag() const
   {
     return ByteUtilities::byte2String(typeBuffer, 1, typeBufferLen-1);
   }
 
-  int Message::length() {
-    // address + type
-    int len = addrBufferLen + typeBufferLen;
-    // type zeros
-    len += 4-(typeBufferLen%4);
-    // datas
-    len += dataBufferLen;
-    return len;
-  }
-
-  int Message::argumentsLen() {
+  int Message::argumentsLen() const
+  {
     return typeBufferLen-1;
   }
   
@@ -246,7 +250,8 @@ namespace OSC {
     if (dataBuffer != NULL) free(dataBuffer);
   }
 
-  int Message::calcDataPos(int index) {
+  int Message::calcDataPos(int index) const
+  {
     int ret = 0;
     if (index > typeBufferLen-1) {
       return -1;
@@ -274,3 +279,4 @@ namespace OSC {
     }
     return ret;
   }
+}

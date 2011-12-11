@@ -1,9 +1,10 @@
 
 #include "OSCPacket.h"
+#include "Arduino.h"
 
 namespace OSC {
-  void Packet::increaseArray {
-    if (*arr != NULL) {
+  void Packet::increaseArray(unsigned char **arr, int oldLen, int newLen){
+    if (*arr != 0) {
       unsigned char *tmp = (unsigned char *) calloc(oldLen, 1);
       memcpy(tmp, *arr, oldLen);
       free(*arr);

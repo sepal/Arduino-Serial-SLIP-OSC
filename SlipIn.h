@@ -46,7 +46,7 @@ namespace OSC {
      * Reads the current packet from buffer.
      * @param The packet to which the data should be saved.
      */
-    void readPacket(Packet* msg);
+    void readPacket(Packet* packet);
     
     /**
      * Returns the length of a packet.
@@ -57,13 +57,14 @@ namespace OSC {
      * Flush the buffer.
      */
     virtual void flush() = 0;
-private:
+protected:
     void incBuffer();
     void clearBuffer();
     
+    unsigned char *buffer;
     int bufferLen;
     bool packetReady;
-  }
+  };
 }
 
 #endif

@@ -16,23 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _PORTIN_H_
-#define _PORTIN_H_
+#ifndef _PORT_IN_H_
+#define _PORT_IN_H_
 
 #include "Arduino.h"
 #include "OSCPacket.h"
+#include "Port.h"
 
 namespace OSC {
-  typedef void (*OscEventFunction) (const Packet);
+  typedef void (*OscEventFunction) (const Packet*);
   
-  class PortIn : Port
+  class PortIn : public Port
   {
+  public:
     PortIn();
     
     virtual void setEventFunction(OscEventFunction function);
   protected:
     OscEventFunction oscEvent;
-  }
+  };
 }
 
 #endif
