@@ -1,7 +1,6 @@
 /**
  * @file
  * @author  Sebastian Gilits <sep.gil@gmail.com>
- * @version 1.0
  *
  * @section LICENSE
  *
@@ -24,7 +23,7 @@
 
 namespace OSC {
   /**
-   * Class for sending Serial SLIP Messages.
+   * Class for sending Serial SLIP Messages using a HardwareSerial line.
    */
   class SlipUsbOut : public SlipOut
   {

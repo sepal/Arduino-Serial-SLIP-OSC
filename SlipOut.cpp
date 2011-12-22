@@ -6,7 +6,7 @@
 namespace OSC {
   SlipOut::SlipOut() {}
   
-  void SlipOut::send(Packet *p) 
+  void SlipOut::send(const Packet *p) 
   {
     int length = p->length();
     unsigned char* packet = (unsigned char *) malloc(length);

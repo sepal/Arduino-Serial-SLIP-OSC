@@ -14,27 +14,37 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @section DESCRIPTION
- *
- * This library handles the communication between an arduinio and an 
- * external device (like an other arduino or a pc).
  */
-#ifndef _PORT_H_
-#define _PORT_H_
+ 
+#ifndef _SLIP_SOFT_OUT_H_
+#define _SLIP_SOFT_OUT_H_
 
-#include "Arduino.h"
+#include <SoftwareSerial.h>
+#include "SlipOut.h"
+
 
 namespace OSC {
-  class Port
-  {    
+  /**
+   * Class for sending Serial SLIP Messages over SoftSerial line.
+   */
+  class SlipSoftOut : public SlipOut
+  {
+  public:
+    /**
+     * Create a new SlipSoft using a existing SoftSerial line.
+     */
+    SlipSoftOut(SoftwareSerial* serial) : SlipOut()
+    {
+      this->serial = serial;
+    }
+  
   protected:
-    static const unsigned char END = 0300;
-    static const unsigned char ESC = 0333;
-    static const unsigned char ESC_END = 0334;
-    static const unsigned char ESC_ESC = 0335;
-    static const unsigned char OSC_MESSAGE = 0x2F;
-    static const unsigned char OSC_BUNDLE = 0x23;
+    virtual void sendByte(unsigned char b)
+    {
+      serial->write(b);
+    }
+    
+    SoftwareSerial* serial;
   };
 }
 

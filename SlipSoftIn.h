@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#ifndef _SLIP_USB_IN_H_
-#define _SLIP_USB_IN_H_
+#ifndef _SLIP_SOFT_IN_H_
+#define _SLIP_SOFT_IN_H_
 
+#include <SoftwareSerial.h>
 #include "Arduino.h"
 #include "OSCMessage.h"
 #include "SlipIn.h"
 
 namespace OSC {
   /**
-   * Class for receiving Serial SLIP Messages over HardwareSerial line.
+   * Class for receiving Serial SLIP Messages over a SoftSerial line.
    */
-  class SlipUsbIn : public SlipIn
+  class SlipSoftIn : public SlipIn
   {
   public:
-    SlipUsbIn(HardwareSerial* serial) : SlipIn()
+    SlipSoftIn(SoftwareSerial* serial) : SlipIn()
     {
       this->serial = serial;
     }
@@ -86,7 +87,7 @@ namespace OSC {
   
   protected:
     
-    HardwareSerial* serial;
+    SoftwareSerial* serial;
   };
 }
 

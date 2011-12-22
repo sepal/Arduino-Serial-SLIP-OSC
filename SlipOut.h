@@ -1,7 +1,6 @@
 /**
  * @file
  * @author  Sebastian Gilits <sep.gil@gmail.com>
- * @version 1.0
  *
  * @section LICENSE
  *
@@ -39,7 +38,7 @@ namespace OSC {
      * Sends an OSC Packet.
      * @param The OSC Packet which should be send.
      */
-     void send(Packet *p);
+     void send(const Packet *p);
   protected:
     /**
       * Sends a byte.

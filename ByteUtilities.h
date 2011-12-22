@@ -1,7 +1,6 @@
 /**
  * @file
  * @author  Sebastian Gilits <sep.gil@gmail.com>
- * @version 1.0
  *
  * @section LICENSE
  *
