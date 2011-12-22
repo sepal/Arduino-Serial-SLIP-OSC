@@ -2,6 +2,8 @@
 --                Arduino Serial SLIP OSC Library                 --
 --------------------------------------------------------------------
 
+!! DEPRACTED !!
+Please use the master branch to get the most up to date code..
 
 About
 -----
