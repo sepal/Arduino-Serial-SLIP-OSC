@@ -9,10 +9,12 @@ namespace OSC {
 
   void SlipIn::readPacket(Packet* packet) {
     if (packetReady && buffer != NULL) {
-      memcpy(packet, buffer, bufferLen);
-      free(buffer);
+      unsigned char *data = (unsigned char *) malloc(bufferLen);
+      memcpy(data, buffer, bufferLen);
+      packet->setBytes(data, bufferLen);
+      free(data);
+      clearBuffer();
     }
-    clearBuffer();
   }
 
 
@@ -38,6 +40,9 @@ namespace OSC {
   }
   
   void SlipIn::clearBuffer() {
+    if (buffer != NULL) {
+      free(buffer);
+    }
     bufferLen = 0;
     packetReady = false;
   }

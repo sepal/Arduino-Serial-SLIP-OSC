@@ -21,19 +21,20 @@
 
 #include "Arduino.h"
 #include "OSCPacket.h"
+#include "OSCMessage.h"
 #include "Port.h"
 
 namespace OSC {
-  typedef void (*OscEventFunction) (const Packet*);
+  typedef void (*OscMessageEventFunction) (const Message*);
   
   class PortIn : public Port
   {
   public:
     PortIn();
     
-    virtual void setEventFunction(OscEventFunction function);
+    virtual void setMessageEventFunction(OscMessageEventFunction function);
   protected:
-    OscEventFunction oscEvent;
+    OscMessageEventFunction oscMessageEvent;
   };
 }
 

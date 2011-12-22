@@ -44,13 +44,13 @@ namespace OSC {
           case END:
             if (bufferLen > 0) {
               packetReady = true;
-              if (buffer[0] == OSC_MESSAGE) {
-                Message packet;
+              //if (buffer[0] == OSC_MESSAGE) {
+                /*Message packet;
                 packet.setBytes(buffer, bufferLen);
-                oscEvent(&packet);
-              } else if (buffer[0] == OSC_BUNDLE) {
+                oscMessageEvent(&packet);*/
+              //} else if (buffer[0] == OSC_BUNDLE) {
                 // TODO: Bundles;
-              }
+              //}
               return true;
             }
             break;
@@ -66,9 +66,9 @@ namespace OSC {
             }
           default:
             // Ensure that data is a valid osc packet.
-            if (bufferLen == 0 && (byte != OSC_MESSAGE || byte != OSC_BUNDLE)) {
-              break;
-            }
+            //if (bufferLen == 0 && (byte != OSC_MESSAGE || byte != OSC_BUNDLE)) {
+            //  break;
+            //}
             incBuffer();
             buffer[bufferLen-1] = byte;
         }

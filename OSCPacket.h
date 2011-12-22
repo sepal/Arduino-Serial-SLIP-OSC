@@ -31,6 +31,12 @@ namespace OSC {
     virtual void getBytes(unsigned char *data) const = 0;
     
     /**
+     * Creates a OSC Message from an byte array.
+     * Be aware, that this function may clear all stored information.
+     */
+    virtual void setBytes(unsigned char *packet, int len) = 0;
+    
+    /**
      * Returns the packet length.
      */
     virtual int length() const = 0;

@@ -53,11 +53,7 @@ namespace OSC {
 
     virtual int length() const;
     
-    /**
-     * Creates a OSC Message from an byte array.
-     * Be aware, that this function will clear all stored parameters.
-     */
-    void setBytes(unsigned char *packet, int len);
+    virtual void setBytes(unsigned char *packet, int len);
 
     /**
      * Sets the address.
