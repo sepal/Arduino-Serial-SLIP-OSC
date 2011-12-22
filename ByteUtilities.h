@@ -194,7 +194,7 @@ public:
     int pos = from;
     String ret = "";
     while (b[pos] != 0x00) {
-      ret += b[pos++];
+      ret += (char)b[pos++];
     }
     return ret;
   }
@@ -209,7 +209,7 @@ public:
     int pos = from;
     String ret = "";
     for (int i = 0; i<length; i++){
-      ret += b[pos+i];
+      ret += (char)b[pos+i];
     }
     return ret;
   }

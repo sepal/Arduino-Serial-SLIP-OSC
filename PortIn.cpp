@@ -1,12 +1,10 @@
 
 #include "PortIn.h"
 
-namespace OSC {
-  void osc_std_message_event(const Message*) {}
-  
+namespace OSC {  
   PortIn::PortIn()
   {
-    oscMessageEvent = osc_std_message_event;
+    oscMessageEvent = NULL;
   }
   
   void PortIn::setMessageEventFunction(OscMessageEventFunction function)

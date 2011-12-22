@@ -19,18 +19,18 @@ namespace OSC {
     destroy();
   }
 
-  void Message::getBytes(unsigned char *packet) const
+  void Message::getBytes(unsigned char *data) const
   {
     int cur = addrBufferLen;
-    memcpy(packet, addrBuffer, addrBufferLen);
+    memcpy(data, addrBuffer, addrBufferLen);
     for (int i=0; i<typeBufferLen; i++) {
-      packet[cur++] = typeBuffer[i];
+      data[cur++] = typeBuffer[i];
     }
     for (int i=0; i<(4-(typeBufferLen%4)); i++) {
-      packet[cur++] = 0x00;
+      data[cur++] = 0x00;
     }
     for (int i=0; i<dataBufferLen; i++) {
-      packet[cur++] = dataBuffer[i];
+      data[cur++] = dataBuffer[i];
     }
   }
 
@@ -46,38 +46,38 @@ namespace OSC {
   }
 
 
-  void Message::setBytes(unsigned char *packet, int len)
+  void Message::setBytes(unsigned char *data, int len)
   {
     destroy();
     int idx = 0;
     // Read address
-    unsigned char byte = packet[idx++];
+    unsigned char byte = data[idx++];
     while (byte != 0) {
-      byte = packet[idx++];
+      byte = data[idx++];
     };
     idx--;
     addrBufferLen = idx+4-(idx%4);
     addrBuffer = (unsigned char *) calloc(addrBufferLen, 1);
-    memcpy(addrBuffer, packet,addrBufferLen);
+    memcpy(addrBuffer, data,addrBufferLen);
     // Goto end of address part and skip the comma
     idx = addrBufferLen+1;
 
     // Read Types
-    byte = packet[idx++];
+    byte = data[idx++];
     while (byte != 0) {
-      byte = packet[idx++];
+      byte = data[idx++];
     };
     idx--;
     typeBufferLen = idx-addrBufferLen;
     int tmp = idx+4-(idx%4)-addrBufferLen;
     typeBuffer = (unsigned char *) calloc(tmp, 1);
     
-    memcpy(typeBuffer, packet+addrBufferLen, tmp);
+    memcpy(typeBuffer, data+addrBufferLen, tmp);
 
     dataBufferLen = len - (addrBufferLen + tmp);
     dataBuffer = (unsigned char *) calloc(dataBufferLen, 1);
 
-    memcpy(dataBuffer, packet+(addrBufferLen + tmp), dataBufferLen);
+    memcpy(dataBuffer, data+(addrBufferLen + tmp), dataBufferLen);
   }
   
   void Message::setAddress(String address)

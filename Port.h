@@ -34,8 +34,8 @@ namespace OSC {
     static const unsigned char ESC = 0333;
     static const unsigned char ESC_END = 0334;
     static const unsigned char ESC_ESC = 0335;
-    static const unsigned char OSC_MESSAGE = '/';
-    static const unsigned char OSC_BUNDLE = '#';
+    static const unsigned char OSC_MESSAGE = 0x2F;
+    static const unsigned char OSC_BUNDLE = 0x23;
   };
 }
 
