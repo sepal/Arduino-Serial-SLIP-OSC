@@ -3,7 +3,7 @@
  *
  * This example demonstrates how to arduinos can communicate together over a SoftSerial line,
  * while one of them is communication with a pc. If the message "/led" is received, the led on 
- * on pin 13 is turned on or of depending on the first argument(which is an integer).
+ * on pin 13 is turned on or of depending on the first argument(which is an integer or a float).
  * The Arduino forwards a message if it receives a message called "/forward". 
  * So if you send the message "/forward" with the arguments "/led" and int(1) or int(0), then
  * the second arduino will turn of its led on pin 13.
@@ -34,7 +34,7 @@ void oscMessageEvent(const OSC::Message *msg) {
   String typeTag = msg->getTypeTag();
 
   // If a "/forward" message is received,
-  if (address.equals("/forward") && typeTag.equals("si")) {
+  if (address.equals("/forward") && (typeTag.equals("si") || typeTag.equals("sf"))) {
     // the actual address is retrieved, as well as the value which should be forwarded
     OSC::Message forward(msg->getString(0));
     forward.add(msg->getInt(1));
@@ -42,14 +42,24 @@ void oscMessageEvent(const OSC::Message *msg) {
     oscSoftOut.send(&forward);
   }
   
-  if (address.equals("/led") && typeTag.equals("i")) {
+  if (address.equals("/led")) {
     OSC::Message answer("/led/answer");
-    if (msg->getInt(0)) {
-      digitalWrite(13, HIGH);
-      answer.add(1);
-    } else {
-      digitalWrite(13, LOW);
-      answer.add(0);
+    if (typeTag.equals("i")) {
+      if (msg->getInt(0)) {
+        digitalWrite(13, HIGH);
+        answer.add(1);
+      } else {
+        digitalWrite(13, LOW);
+        answer.add(0);
+      }
+    } else if (typeTag.equals("f")) {
+      if (msg->getFloat(0) > 0) {
+        digitalWrite(13, HIGH);
+        answer.add(1);
+      } else {
+        digitalWrite(13, LOW);
+        answer.add(0);
+      }
     }
     // To simplify the example we send the answer to both lines, since we dont know where it came from.
     oscOut.send(&answer);

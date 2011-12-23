@@ -2,7 +2,7 @@
  * Simple OSC receiving example.
  *
  * This example simply turns the LED on pin 13 on or off, when the message
- * "/led" is received depending on the first argument(which is an int).
+ * "/led" is received depending on the first argument(which is an int or a float).
  *
  * @author  Sebastian Gilits sep.gil@gmail.com
  * @version 1.0
@@ -17,13 +17,20 @@ void oscMessageEvent(const OSC::Message *msg) {
   String address = msg->getAddress();
   String typeTag = msg->getTypeTag();
 
-  if (address.equals("/led") && typeTag.equals("i")) {
-    if (msg->getInt(0) == 1) {
-      digitalWrite(13, HIGH);
-    } else {
-      digitalWrite(13, LOW);
+  if (address.equals("/led")) {
+    if (typeTag.equals("i")) {
+      if (msg->getInt(0)) {
+        digitalWrite(13, HIGH);
+      } else {
+        digitalWrite(13, LOW);
+      }
+    } else if (typeTag.equals("f")) {
+      if (msg->getFloat(0) > 0) {
+        digitalWrite(13, HIGH);
+      } else {
+        digitalWrite(13, LOW);
+      }
     }
-  }
 }
 
 void eventOSC(OSC::Message *msg) {
