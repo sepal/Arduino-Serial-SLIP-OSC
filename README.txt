@@ -25,6 +25,9 @@ you can also use them for other purposes. The ByteUtility class for
 example might come in handy if you want to read or save data types
 like float, integer or String into the Arduinos EEPROM.
 
+For test purposes you can use this little processing test program I wrote.
+https://gist.github.com/1512585
+
 Features
 --------
 
