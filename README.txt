@@ -28,6 +28,7 @@ like float, integer or String into the Arduinos EEPROM.
 For test purposes you can use this little processing test program I wrote.
 https://gist.github.com/1512585
 
+
 Features
 --------
 
@@ -38,6 +39,11 @@ Supported Types:
 * Float
 * Int
 * String
+
+Supported Transport Types:
+ * Serial SLIP over UART
+ * Serial SLIP over SoftSerial lib
+
 
 Contact/Support
 ---------------
