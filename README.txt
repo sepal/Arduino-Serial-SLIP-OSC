@@ -1,3 +1,7 @@
+-- DEPRECATED --
+Use the library from CMNAT instead: https://github.com/CNMAT/OSC
+
+
 --------------------------------------------------------------------
 --                    Arduino OSC Library                         --
 --------------------------------------------------------------------
